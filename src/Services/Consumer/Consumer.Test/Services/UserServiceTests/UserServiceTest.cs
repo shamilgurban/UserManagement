@@ -8,7 +8,10 @@ using Consumer.API.Services.UserService.Queries;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -67,7 +70,7 @@ namespace Consumer.Test.Services.UserServiceTests
             var configuration = new MapperConfiguration(cfg => cfg.AddProfile(domainProfile));
             IMapper mapper = new Mapper(configuration);
             var logger = new Mock<ILogger>();
-            UserListByOrganisationIdQueryHandler userListByOrganisationIdQueryHandler = new UserListByOrganisationIdQueryHandler(userRepository.Object, mapper, logger.Object);
+            var userListByOrganisationIdQueryHandler = new UserListByOrganisationIdQueryHandler(userRepository.Object, mapper, logger.Object);
 
             userRepository.Setup(m => m.GetUsersByOrganisationId(1, 0, 2).Result).Returns(new List<User>
             {
