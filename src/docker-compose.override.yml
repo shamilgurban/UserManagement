@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  sender.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "8080:80"
+
+  consumer.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "8081:80"
+
+  rabbitmq:
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    container_name: "rabbitmq"

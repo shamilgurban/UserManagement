@@ -1,0 +1,52 @@
+version: '3.4'
+
+services:
+  sender.api:
+    image: ${DOCKER_REGISTRY-}senderapi
+    build:
+      context: .
+      dockerfile: Services/Sender/Sender.API/Dockerfile
+    depends_on: 
+      - "rabbitmq"
+      - "postgres"
+    networks:
+      - user-management-network
+
+  consumer.api:
+    image: ${DOCKER_REGISTRY-}consumerapi
+    build:
+      context: .
+      dockerfile: Services/Consumer/Consumer.API/Dockerfile
+    depends_on:
+      - "rabbitmq"
+      - "postgres"
+    networks:
+      - user-management-network
+
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    volumes:
+      - 'rabbitmq_data:/data'
+    networks:
+      - user-management-network
+
+  postgres:
+    image: 'postgres'
+    ports:
+      - "5432:5432"
+    restart: always
+    container_name: postgres
+    environment:
+      POSTGRES_PASSWORD: P@ssw0rd!
+    volumes:
+      - 'postgres-volume:/var/lib/postgres/data'
+    networks:
+      - user-management-network
+
+volumes:
+  rabbitmq_data:
+  postgres-volume:
+
+networks:
+  user-management-network:
+    driver: bridge
